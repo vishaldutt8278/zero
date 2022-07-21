@@ -1,0 +1,260 @@
+SQL:
+
+#Full Outer Join vs Cross join
+The FULL OUTER JOIN keyword returns all records when there is a match in left (table1) or right (table2) table records.
+Tip: FULL OUTER JOIN and FULL JOIN are the same.
+
+A cross join is a type of join that returns the Cartesian product of rows from the tables in the join. In other words, it combines each row from the first table with each row from the second table
+
+#Self Join
+A self join is a regular join, but the table is joined with itself.
+
+#Left outer join vs left join\
+syntax - SELECT OrderNumber, TotalAmount, FirstName, LastName, City, Country
+  FROM Customer C 
+  LEFT JOIN [Order] O ON O.CustomerId = C.Id
+ ORDER BY TotalAmount
+
+A LEFT JOIN performs a join starting with the left table.
+
+Then, any matching records from the right table will be included.
+
+Rows without a match will have NULL column values.
+
+
+#inner join
+matching rows( matching subset)
+We can also write JOIN instead of INNER JOIN. JOIN is same as INNER JOIN.
+
+#union and union all
+The only difference between Union and Union All is that Union extracts the rows that are being specified in the query while Union All extracts all the rows including the duplicates (repeated values) from both the queries
+If you know that all the records returned are unique from your union, use UNION ALL instead, it gives faster results.
+
+#how to create an empty table from an existing table:
+CREATE TABLE new_table
+  AS (SELECT *
+      FROM old_table WHERE 1=2);
+
+
+#sequence of  execution of query in sql
+1. FROM and JOINs
+2. WHERE
+3. GROUP BY
+4. HAVING
+5. SELECT
+6. DISTINCT
+7. ORDER BY
+8. LIMIT / OFFSET
+
+
+#where vs having
+The difference between the having and where clause in SQL is that the where clause cannot be used with aggregates, but the having clause can.
+
+#Difference between order by and group by
+The ORDER BY clause is applicable when we want to get the data obtained by a query in the sorting order
+the GROUP BY clause is applicable when we want to use aggregate functions to more than one set of rows.
+
+SELECT D_state, avg(D_salary) AS salary  
+FROM developers  
+GROUP BY D_state  
+ORDER BY D_state DESC; 
+This query initially formed an intermediate result that has grouped the state. Next, the AVG function is performed on each group of states, then sort the result in descending order.
+
+#aggregate functions
+SUM, MAX, MIN, COUNT and AVERAGE
+Aggregators are very often used in conjunction with Grouping functions in order to summarize the data
+
+SELECT ID,
+Name,
+sum(p.ownershippercentage) AS onwership_percentage
+FROM Customer GROUP BY ID, Name
+
+SELECT ID, 
+Name,
+ProductID,
+OwnershipPercentage,
+sum(OwnershipPercentage) over(partition by ID) as total_ownership_percentage
+FROM Customer c
+
+
+#transpose function
+using decode:
+select id,
+max(decode(t.type, '1', t.contacttext))Phone,
+max(decode(t.type, '2', t.contacttext))Fax,
+max(decode(t.type, '3', t.contacttext))mob,
+max(decode(t.type, '4', t.contacttext))Email
+from
+(select id, contacttext, type from customer
+where id =1)t
+group by id
+
+using pivot:
+SELECT * FROM 
+  ( 
+    SELECT id, contacttext, type 
+    FROM customer 
+    WHERE id = 1
+  )
+  PIVOT ( 
+    min(contacttext)
+    FOR type in (1 Phone, 2 Fax, 3 Mobile, 4 Email));
+
+
+Pivot operator converts the rows data of the table into the column data. The Unpivot operator does the opposite that is it transform the column based data into rows.
+
+
+#Managers of employeez
+select a.ename as manager  , b.ename as employee
+from emp a, emp b
+where a.empno= b.mgr
+
+#Employees earning more than managers
+
+select a.ename as manager  , b.ename as employee ,a.sal as mgr_sal,
+b.sal as emp_sal
+
+from emp a, emp b
+where a.empno= b.mgr
+
+#Window functions
+
+https://www.youtube.com/watch?v=Ww71knvhQ-s
+
+rank
+dense rank
+Nth highest salary by dept
+rownum
+duplicate values deletion
+lead
+lag
+
+https://www.youtube.com/watch?v=zAmJPdZu8Rg&list=PLavw5C92dz9GTiYtgpkhpK9GPx-r-JvSN&index=2
+
+first_value, last_value,percent_rank,cume_dist
+ntile
+partition by - syntax
+
+performance of queries
+-- steps to check
+https://www.youtube.com/watch?v=nHL1YgtTapA
+
+sql server performance tuning -- https://www.youtube.com/watch?v=FoTMJFZ4wwg
+a query is not performing well today as compared to yesterday, how to debug
+query optimization, debugging, tuning
+data mining
+
+
+indexes - how to create 
+clustered and nonclustered indexes - syntax
+types of indexes
+differences between indexes
+
+datawarehouse concepts
+types of dimensions
+types of facts
+junk dimension
+start schema, snowflake , difference
+
+keys 
+relationships
+one to one
+one to many
+many to many
+
+triggers
+materialized views and views
+delete, truncate, drop
+types of materialized views
+watermark columns, tables in sql
+
+incremental data loading
+
+
+What is composite key? How it differs from candidate key?
+All the combination of attributes which are used to uniquely identify any record called composite key.
+minimum no of attributes used for uniquely identify any entity called candidate key
+
+
+---------------------------------------------------------
+
+Power BI:
+
+time intelligence functions used
+filter functions used
+lst year calculation dax
+last 3 months calculation dax
+
+percentage
+
+relationships in power bi
+row level security
+
+aggregate functions 
+group by - summarize
+calculate
+
+merge and joining queries
+data flow
+
+scenarios or analytics done is supply chain
+last quarter
+inventory in progress
+orders in progress
+last quarter order in progress
+
+userrelationship
+inactive and active relationships
+fuzzy logic
+many to many relationship is not supported in Power BI
+
+import vs direct query
+how to check performance of visuals
+what types of visuals to use when
+
+parameters 
+measures vs calculated columns
+when to use measures and when to use calculated columns
+incremental load in power bi 
+refresh - types of refreshes in power bi
+
+slicers vs filters 
+sync slicers
+buttons
+when to use slicers and filters
+custom visuals
+
+types of filters 
+can we use filters on dashboards
+can we use slicers on dashboards
+
+custom table
+sum vs sumx
+count vs count x
+normal aggregate functions vs iterate functions
+
+access in Power BI service
+what is power BI report server
+how to share reports in service
+scheduled refresh
+gateways
+types of gateways
+
+combine excel files in power bi
+split , concat
+Invoke custom function
+custom column
+conditional column
+
+Parsing
+Query dependencies
+Diagnostics - concept
+
+
+---------------------------------------------
+
+
+
+
+
+
